@@ -20,8 +20,7 @@ export default function DayListItem(props) {
   }
 
   return (
-    // can't pass setDay(name) without function because it will execute as you pass it. have to do either const clicked() => setDay(name) and pass onClick={clicked} or () => setDay(name). Usually, the onClick handler would use event param ex: event.target.val(name)
-    <li className={dayClass} onClick={() => setDay(name)}>
+    <li className={dayClass} onClick={spots ? setDay : null}>
       <h2 className="text--regular">{name}</h2> 
       <h3 className="text--light">{formatSpots(spots)}</h3>
     </li>
