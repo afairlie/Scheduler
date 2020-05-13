@@ -27,6 +27,11 @@ export default function Form(props) {
     onSave(name, interviewer)
   }
 
+  const updateName = (event) => {
+    event.preventDefault()
+    setName(event.target.value)
+  }
+
   return <main className="appointment__card appointment__card--create">
     <section className="appointment__card-left">
       <form autoComplete="off" onSubmit={event => event.preventDefault}>
@@ -36,7 +41,8 @@ export default function Form(props) {
           type="text"
           placeholder="Enter Student Name"
           value={name}
-          onChange={event => setName(event.target.value)}
+          // onChange={event => setName(event.target.value)}
+          onChange={updateName}
         />
       </form>
       <InterviewerList interviewers={interviewers} value={interviewer} onChange={setInterviewer} />
