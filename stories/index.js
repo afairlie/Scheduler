@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
@@ -10,7 +10,16 @@ import DayListItem from 'components/DayListItem';
 import DayList from 'components/DayList';
 import InterviewerListItem from 'components/InterviewerListItem';
 import InterviewerList from 'components/InterviewerList';
+import Appointment from 'components/Appointment';
+import Header from 'components/Appointment/Header';
+import Empty from 'components/Appointment/Empty';
+import Show from 'components/Appointment/Show';
+import Confirm from 'components/Appointment/Confirm';
+import Status from 'components/Appointment/Status';
+import Error from 'components/Appointment/Error';
+import Form from 'components/Appointment/Form';
 
+// BUTTON
 storiesOf("Button", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
@@ -27,6 +36,7 @@ storiesOf("Button", module)
     </Button>
   ));
 
+// DAY LIST ITEM
 storiesOf("DayListItem", module) //Initiates Storybook and registers our DayListItem component
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
@@ -37,6 +47,7 @@ storiesOf("DayListItem", module) //Initiates Storybook and registers our DayList
   .add("Clickable", () => (
     <DayListItem name="Tuesday" setDay={event => action("setDay")('Tuesday')} spots={5} /> // action() allows us to create a callback that appears in the actions panel when clicked
   ));
+
 
 const days = [
   {
@@ -55,7 +66,8 @@ const days = [
     spots: 0,
   },
 ];
-  
+
+// DAY LIST
 storiesOf("DayList", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
@@ -73,6 +85,7 @@ const interviewer = {
   avatar: "https://i.imgur.com/LpaY82x.png"
 };
 
+// INTERVIEWER LIST ITEM
 storiesOf("InterviewerListItem", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
@@ -109,6 +122,10 @@ const interviewers = [
   { id: 5, name: "Sven Jones", avatar: "https://i.imgur.com/twYrpay.jpg" }
 ];
 
+// parent manage the state 
+// refactor setInterviewer = onChange, Interviewer = Value
+
+// INTERVIEWER LIST
 storiesOf("InterviewerList", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
@@ -116,13 +133,40 @@ storiesOf("InterviewerList", module)
   .add("Initial", () => (
     <InterviewerList
       interviewers={interviewers}
-      setInterviewer={action("setInterviewer")}
+      onChange={action("onChange")}
     />
   ))
   .add("Preselected", () => (
     <InterviewerList
       interviewers={interviewers}
-      interviewer={3}
-      setInterviewer={action("setInterviewer")}
+      value={3}
+      onChange={action("onChange")}
     />
   ));
+
+const apptProps = {
+  student: 'Lydia Miller-Jones',
+  interviewer: 'Sylvia Palmer'
+};
+
+storiesOf("Appointment", module)
+  .addParameters({
+    backgrounds: [{ name: "white", value: "#fff", default: true }]
+  })
+  .add("Appointment", () => <Appointment />)
+  .add('Appointment w/ Time', () => <Appointment time='12pm'/>)
+  .add('Header', () => <Header time='12pm'/>)
+  .add('Empty', () => <Empty onAdd={action('onAdd')}/>)
+  .add('Show', () => <Show student={apptProps.student} interviewer={apptProps.interviewer} onEdit={action('onEdit')} onDelete={action('onDelete')}/>)
+  .add('Confirm', () => <Confirm message='Delete the appointment?' onConfirm={action('onConfirm')} onCancel={action('onCancel')} />)
+  .add('Saving', () => <Status message='Saving'/>)
+  .add('Deleting', () => <Status message='Deleting'/>)
+  .add('Error', () => <Error message='Could not delete appointment'onClose={action('onClose')}/> )
+  .add('Edit', () => <Form name={apptProps.student} interviewers={interviewers} interviewer={3} onSave={action('onSave')} onCancel={action('onCancel')}/>)
+  .add('Create', () => <Form interviewers={interviewers} onSave={action('onSave')} onCancel={action('onCancel')} />)
+  .add("Appointment Empty", () => (
+    <Fragment>
+      <Appointment id={1} time="12pm" />
+      <Appointment id="last" time="1pm" />
+    </Fragment>
+  ))

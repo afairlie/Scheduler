@@ -7,12 +7,13 @@ import './InterviewerList.scss';
 // setInterviewer:function - a function that accepts an interviewer id
 
 export default function InterviewerList(props) {
-  const {interviewers, interviewer, setInterviewer} = props;
+  // const {interviewers, interviewer, setInterviewer} = props;
+  const {interviewers, value, onChange} = props;
 
   const list = interviewers.map((interviewerItem) => {
     return <InterviewerListItem 
-    selected={interviewerItem.id === interviewer} 
-    setInterviewer={(event) => setInterviewer(interviewerItem.id)} 
+    selected={interviewerItem.id === value} 
+    setInterviewer={ event => onChange(interviewerItem.id)} 
     {...interviewerItem}/>
   })
 
