@@ -50,11 +50,6 @@ export default function Application(props) {
     .then((res) => {
       setState({...state, appointments})
     })
-    .catch(e => console.log(e))
-  }
-
-  const editInterview = (id, interview) => {
-    console.log(id, interview)
   }
 
   const cancelInterview = (id) => {
@@ -74,7 +69,6 @@ export default function Application(props) {
       data: { interview: null }
     })
     .then(res => setState({...state, appointments}))
-    .catch(e => console.log(e))
   }
 
   const appointments = getAppointmentsForDay(state, state.day);
@@ -92,7 +86,6 @@ export default function Application(props) {
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
-        editInterview={editInterview}
       />
     );
   })

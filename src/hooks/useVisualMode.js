@@ -10,11 +10,11 @@ const useVisualMode = (initialMode) => {
 
   const transition = (newMode, replace) => {
     if (replace) {
-      setHistory(history.slice(1))
+      setHistory(prev => ([...prev].slice(1)))
       setMode(newMode)
     } else {
       setMode(newMode)
-      setHistory([mode, ...history])
+      setHistory(prev => [mode,...prev])
     }
   }
 
@@ -22,11 +22,12 @@ const useVisualMode = (initialMode) => {
     if (history.length === 1) {
       setMode(initialMode) 
     } else {
-      setHistory(history.slice(1))
+      setHistory(prev => ([...prev.slice(1)]))
       setMode(history[0])
     }
   }
 
+  console.log(mode, history)
   return {mode, transition, back}
 }
 
