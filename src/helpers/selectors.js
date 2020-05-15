@@ -12,7 +12,19 @@ const getAppointmentsForDay = (state, day) => {
   return appointmentsList
 }
 
-function getInterview(state, interview) {
+const getInterviewersForDay = (state, day) => {
+  if (state.interviewers.length === 0){return []}
+  const interviewers = state.days.filter(dayObj => dayObj.name === day)[0];
+
+  if(!interviewers){return []}
+  const interviewerList = interviewers.interviewers.map(id => {
+    return state.interviewers[id]
+  })
+  console.log('interviewer list:', interviewerList)
+  return interviewerList;
+}
+
+const getInterview = (state, interview) => {
   if (!interview) return null;
 
   const result = state.interviewers[interview.interviewer]
@@ -24,4 +36,4 @@ function getInterview(state, interview) {
 
 }
 
-export { getAppointmentsForDay, getInterview };
+export { getAppointmentsForDay, getInterviewersForDay, getInterview };
