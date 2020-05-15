@@ -16,8 +16,9 @@ const CREATE = 'CREATE';
 const SAVING = 'SAVING';
 const DELETING = 'DELETING';
 const CONFIRM = 'CONFIRM';
+const EDIT = 'EDIT';
 
-export default function Appointment({id, time, interview, interviewers, bookInterview, cancelInterview}) {
+export default function Appointment({id, time, interview, interviewers, bookInterview, cancelInterview, editInterview}) {
   const { mode, transition, back } = useVisualMode(
     interview ? SHOW : EMPTY
   );
@@ -36,6 +37,10 @@ export default function Appointment({id, time, interview, interviewers, bookInte
     .then(()=> {transition(SHOW)})
   }
 
+  const edit = () => {
+    transition(EDIT)
+  }
+
   const confirm = () => {
     transition(CONFIRM)
   }
@@ -49,18 +54,39 @@ export default function Appointment({id, time, interview, interviewers, bookInte
   return <article className="appointment">
     <Header time={time}/>
       {mode === EMPTY && <Empty onAdd={onAdd} />}
-      {mode === SAVING && <Status message={'Saving'} />}
-      {mode === CONFIRM && <Confirm message='Are you sure you would like to delete?' onConfirm={onDelete} onCancel={back} />}
-      {mode === DELETING && <Status message={'Deleting'} />}
       {mode === SHOW && !interview &&  <Empty onAdd={onAdd} />}
+      {mode === CONFIRM && 
+        <Confirm 
+          message='Are you sure you would like to delete?' 
+          onConfirm={onDelete} 
+          onCancel={back} 
+        />
+      }
+      {mode === DELETING && <Status message={'Deleting'} />}
       {mode === SHOW && interview && (
         <Show
           student={interview.student}
           interviewer={interview.interviewer}
           onDelete={confirm}
+          onEdit={edit}
         />
       )}
-      {mode === CREATE && <Form interviewers={interviewers} onCancel={back} onSave={save} />}
-      
+      {mode === CREATE && 
+        <Form 
+          interviewers={interviewers} 
+          onCancel={back} 
+          onSave={save} 
+        />
+      }
+      {mode === SAVING && <Status message={'Saving'} />}
+      {mode === EDIT && 
+        <Form 
+          name={interview.student}
+          interviewer={interview.interviewer}
+          interviewers={interviewers}
+          onCancel={back}
+          onSave={save}
+        />
+      }
   </article>
 }

@@ -53,6 +53,10 @@ export default function Application(props) {
     .catch(e => console.log(e))
   }
 
+  const editInterview = (id, interview) => {
+    console.log(id, interview)
+  }
+
   const cancelInterview = (id) => {
     const appointment = {
       ...state.appointments[id],
@@ -63,7 +67,7 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     }
-    
+
     return axios({
       method: 'delete',
       url: `/api/appointments/${id}`,
@@ -88,6 +92,7 @@ export default function Application(props) {
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
+        editInterview={editInterview}
       />
     );
   })
