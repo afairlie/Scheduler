@@ -20,7 +20,6 @@ const getInterviewersForDay = (state, day) => {
   const interviewerList = interviewers.interviewers.map(id => {
     return state.interviewers[id]
   })
-  console.log('interviewer list:', interviewerList)
   return interviewerList;
 }
 

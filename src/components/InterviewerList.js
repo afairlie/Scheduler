@@ -14,7 +14,9 @@ export default function InterviewerList(props) {
     return <InterviewerListItem 
     selected={interviewerItem.id === value} 
     setInterviewer={ event => onChange(interviewerItem.id)} 
-    {...interviewerItem}/>
+    {...interviewerItem}
+    key={interviewerItem.id}
+    />
   })
 
   return <section className="interviewers">
