@@ -35,4 +35,10 @@ const getInterview = (state, interview) => {
 
 }
 
-export { getAppointmentsForDay, getInterviewersForDay, getInterview };
+const findDayByAppt = (state, id) => {
+  return state.days.filter(day => {
+    return day.appointments.includes(id) && day;
+  })[0]
+}
+
+export { getAppointmentsForDay, getInterviewersForDay, getInterview, findDayByAppt };

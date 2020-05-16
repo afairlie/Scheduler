@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 
 // take in an initial mode
 // set the mode state with the initial mode provided
@@ -27,7 +27,7 @@ const useVisualMode = (initialMode) => {
     }
   }
 
-  console.log(mode, history)
+  // console.log(mode, history)
   return {mode, transition, back}
 }
 

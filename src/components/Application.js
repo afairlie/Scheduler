@@ -12,17 +12,17 @@ import "components/Application.scss";
 export default function Application(props) {
   const {state, setDay, bookInterview, cancelInterview} = useApplicationData()
 
-
+  // render appointments
   const appointmentList = getAppointmentsForDay(state, state.day).map( appointment => {
-    
     const interviewers = getInterviewersForDay(state, state.day);
+    const interview = getInterview(state, appointment.interview);
 
     return (
       <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
-        interview={getInterview(state, appointment.interview)}
+        interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
@@ -41,7 +41,8 @@ export default function Application(props) {
         <hr className='sidebar__separator sidebar--centered'></hr>
         <nav className='sidebar__menu'>
           <DayList
-            days={state.days}
+          // IS THIS WHY SPOTS REMAINING ARE UPDATING WITHOUT EXPLICITLY SETTING STATE IN USE APPLICATION DATA?
+            days={[...state.days]}
             day={state.day}
             setDay={setDay}
           />
