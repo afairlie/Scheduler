@@ -36,9 +36,13 @@ const getInterview = (state, interview) => {
 }
 
 const findDayByAppt = (state, id) => {
-  return state.days.filter(day => {
+  const filteredDay = state.days.filter((day) => {
     return day.appointments.includes(id) && day;
   })[0]
+
+  const dayCopy = {...filteredDay, appointments: [...filteredDay.appointments], interviewers: [...filteredDay.interviewers]}
+
+  return dayCopy;
 }
 
 export { getAppointmentsForDay, getInterviewersForDay, getInterview, findDayByAppt };

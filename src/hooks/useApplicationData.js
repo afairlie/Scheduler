@@ -27,44 +27,48 @@ const useApplicationData = () => {
 
 
   const bookInterview = (id, interview) => {
-    // does the appointment already exist?
-    if (!state.appointments[id].interview){
-      const day = findDayByAppt(state, id)
-      day.spots--;
-    }
-    const appointment = {...state.appointments[id], interview: { ...interview }};
-    const appointments = {...state.appointments, [id]: appointment};
-
     return axios({
       method: 'put',
       url: `/api/appointments/${id}`,
       data: { interview }
     })
-    .then((res) => {
-      setState({...state, appointments})
+    .then(res => {
+      const day = findDayByAppt(state, id)
+      // does the appointment already exist?
+      if (!state.appointments[id].interview){
+        day.spots--;
+      }
+      const days = [...state.days]
+      days[day.id - 1] = day;
+      setState(prev => ({...prev, days: [...days]}));
+      return res;
+    })
+    .then( res => {
+      const appointment = {...state.appointments[id], interview: { ...interview }};
+      const appointments = {...state.appointments, [id]: appointment};
+      setState(prev => ({...prev, appointments}))
     })
   }
 
   const cancelInterview = (id) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
-
-    const day = findDayByAppt(state, id)
-    day.spots++;
-
     return axios({
       method: 'delete',
       url: `/api/appointments/${id}`,
       data: { interview: null }
     })
-    .then(res => setState({...state, appointments}))
+    .then(res => {
+      const day = findDayByAppt(state, id)
+      day.spots++;
+      const days = [...state.days]
+      days[day.id - 1] = day;
+      setState(prev => ({...prev, days: [...days]}));
+      return res;
+    })
+    .then(res => {
+      const appointment = {...state.appointments[id], interview: null};
+      const appointments = {...state.appointments, [id]: appointment}
+      setState(prev => ({...prev, appointments}))
+    })
   }
 
   return {state, setDay, bookInterview, cancelInterview};
