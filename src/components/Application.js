@@ -41,7 +41,6 @@ export default function Application(props) {
         <hr className='sidebar__separator sidebar--centered'></hr>
         <nav className='sidebar__menu'>
           <DayList
-          // IS THIS WHY SPOTS REMAINING ARE UPDATING WITHOUT EXPLICITLY SETTING STATE IN USE APPLICATION DATA?
             days={[...state.days]}
             day={state.day}
             setDay={setDay}
