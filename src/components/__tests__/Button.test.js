@@ -11,7 +11,10 @@ it("renders without crashing", () => {
 });
 
 it("renders its `children` prop as text", () => {
+  // render the button component, deconstruct the react-testing-library object that's returned and extract the getByText method
   const { getByText } = render(<Button>Default</Button>);
+  // getByText queries the button DOM node (aka access the rendered component on the DOM using the getByText method). the ability to call getByText is provided by testing-library jest-dom extend 
+  // expect is a jest matcher, toBeInTheDocument is a jest-dom matcher
   expect(getByText("Default")).toBeInTheDocument();
 });
 
