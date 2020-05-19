@@ -6,6 +6,7 @@ import Application from "components/Application";
 
 afterEach(cleanup);
 
+// testing coverage
 xit("renders without crashing", () => {
   render(<Application />);
 });
