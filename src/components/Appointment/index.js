@@ -55,7 +55,7 @@ export default function Appointment({id, time, interview, interviewers, bookInte
     .catch(e => transition(ERROR_DELETE, true))
   }
 
-  return <article className="appointment">
+  return <article className="appointment" data-testid="appointment">
     <Header time={time}/>
       {mode === EMPTY && <Empty onAdd={onAdd} />}
       {mode === SHOW && !interview &&  <Empty onAdd={onAdd} />}

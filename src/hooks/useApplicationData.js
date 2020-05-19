@@ -27,8 +27,7 @@ const useApplicationData = () => {
 
 
   const bookInterview = (id, interview) => {
-    return axios({
-      method: 'put',
+    return axios.put({
       url: `/api/appointments/${id}`,
       data: { interview }
     })
@@ -51,8 +50,7 @@ const useApplicationData = () => {
   }
 
   const cancelInterview = (id) => {
-    return axios({
-      method: 'delete',
+    return axios.delete({
       url: `/api/appointments/${id}`,
       data: { interview: null }
     })
