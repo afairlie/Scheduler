@@ -27,10 +27,7 @@ const useApplicationData = () => {
 
 
   const bookInterview = (id, interview) => {
-    return axios.put({
-      url: `/api/appointments/${id}`,
-      data: { interview }
-    })
+    return axios.put(`/api/appointments/${id}`, { interview })
     .then(res => {
       const day = findDayByAppt(state, id)
       // does the appointment already exist?
@@ -42,7 +39,7 @@ const useApplicationData = () => {
       setState(prev => ({...prev, days: [...days]}));
       return res;
     })
-    .then( res => {
+    .then( (res) => {
       const appointment = {...state.appointments[id], interview: { ...interview }};
       const appointments = {...state.appointments, [id]: appointment};
       setState(prev => ({...prev, appointments}))
@@ -50,10 +47,7 @@ const useApplicationData = () => {
   }
 
   const cancelInterview = (id) => {
-    return axios.delete({
-      url: `/api/appointments/${id}`,
-      data: { interview: null }
-    })
+    return axios.delete(`/api/appointments/${id}`, { interview: null })
     .then(res => {
       const day = findDayByAppt(state, id)
       day.spots++;
