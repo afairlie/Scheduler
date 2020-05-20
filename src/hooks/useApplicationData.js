@@ -7,9 +7,12 @@ const SET_INTERVIEW = "SET_INTERVIEW";
 
 function reducer(state, action) {
   switch (action.type) {
-    case SET_DAY:
+    case SET_DAY: {
       return {...state, day: action.day}
+    }
     case SET_APPLICATION_DATA: {
+      console.log('set_application runs')
+      console.log('days: ', action.days)
       return {...state,
         days: action.days,
         appointments: action.appointments,
@@ -17,10 +20,43 @@ function reducer(state, action) {
       }
     }
     case SET_INTERVIEW: {
-      if(!action.interview) {
-        return {...state, appointments: {...state.appointments, [action.id]: {...state.appointments[action.id], interview: null}}}
+      console.log('set_interview runs')
+
+      const updateSpots = (state) => {
+        // for each day, you want to loop over the day, and count the free spots
+        const days = state.days.map(day => {
+          let spots = 0;
+
+          day.appointments.forEach(appointmentID => {
+            if (!state.appointments[appointmentID].interview) {
+              console.log(state.appointments[appointmentID])
+              spots++;
+            }
+          })
+
+          day.spots = spots;
+          console.log(day.spots)
+          return day;
+        })
+        // THIS RETURN IN JEST SEEMS ODD.
+        console.log('days before returned: ', days)
+        return days;
+      }
+
+      if (!action.interview) {
+        const newState = {...state}
+        
+        newState.appointments[action.id].interview = null
+        newState.days = updateSpots(newState)
+
+        return newState;
       } else {
-        return {...state, appointments: {...state.appointments, [action.id]: {...state.appointments[action.id], interview: {...action.interview}}}}
+        const newState = {...state}
+        
+        newState.appointments[action.id].interview = action.interview
+        newState.days = updateSpots(newState)
+
+        return newState;
       }
     }
     default:
@@ -48,10 +84,16 @@ const useApplicationData = () => {
       Promise.resolve(axios.get('/api/interviewers'))
     ])
     .then(all => {
+      // console.log(all)
       const days = all[0].data;
       const appointments = all[1].data;
       const interviewers = all[2].data;
-      dispatch({type: SET_APPLICATION_DATA, days, appointments, interviewers})
+      dispatch({
+        type: SET_APPLICATION_DATA, 
+        days: days, 
+        appointments: appointments, 
+        interviewers: interviewers})
+      return true;
     })
   }, [])
 
@@ -59,36 +101,17 @@ const useApplicationData = () => {
 
   const bookInterview = (id, interview) => {
     return axios.put(`/api/appointments/${id}`, { interview })
-    // .then(res => {
-    //   const day = findDayByAppt(state, id)
-    //   // does the appointment already exist?
-    //   if (!state.appointments[id].interview){
-    //     day.spots--;
-    //   }
-    //   const days = [...state.days]
-    //   days[day.id - 1] = day;
-    //   // setState(prev => ({...prev, days: [...days]}));
-    //   return res;
-    // })
     .then( (res) => {
       dispatch({type: SET_INTERVIEW, id, interview})
-      return res;
+      return true;
     })
   }
 
   const cancelInterview = (id) => {
     return axios.delete(`/api/appointments/${id}`, { interview: null })
-    // .then(res => {
-    //   // const day = findDayByAppt(state, id)
-    //   // day.spots++;
-    //   // const days = [...state.days]
-    //   // days[day.id - 1] = day;
-    //   // setState(prev => ({...prev, days: [...days]}));
-    //   return res;
-    // })
     .then(res => {
       dispatch({type: SET_INTERVIEW, id, interview: null})
-      return res;
+      return true;
     })
   }
 
