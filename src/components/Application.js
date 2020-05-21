@@ -9,7 +9,7 @@ import "components/Application.scss";
 
 // a feature of this architecture: keep persistent stuff all in the same level up above
 
-export default function Application(props) {
+export default function Application() {
   const {state, setDay, bookInterview, cancelInterview} = useApplicationData()
 
   // render appointments
@@ -41,7 +41,7 @@ export default function Application(props) {
         <hr className='sidebar__separator sidebar--centered'></hr>
         <nav className='sidebar__menu'>
           <DayList
-            days={[...state.days]}
+            days={state.days}
             day={state.day}
             setDay={setDay}
           />

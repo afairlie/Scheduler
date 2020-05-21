@@ -11,8 +11,8 @@ function reducer(state, action) {
       return {...state, day: action.day}
     }
     case SET_APPLICATION_DATA: {
-      console.log('set_application runs')
-      console.log('days: ', action.days)
+      // console.log('set_application runs')
+      // console.log('days: ', action.days)
       return {...state,
         days: action.days,
         appointments: action.appointments,
@@ -20,26 +20,26 @@ function reducer(state, action) {
       }
     }
     case SET_INTERVIEW: {
-      console.log('set_interview runs')
+      // console.log('set_interview runs')
 
       const updateSpots = (state) => {
         // for each day, you want to loop over the day, and count the free spots
         const days = state.days.map(day => {
-          let spots = 0;
+          let spotCount = 0;
 
           day.appointments.forEach(appointmentID => {
             if (!state.appointments[appointmentID].interview) {
-              console.log(state.appointments[appointmentID])
-              spots++;
+              // console.log(state.appointments[appointmentID])
+              spotCount++;
             }
           })
 
-          day.spots = spots;
-          console.log(day.spots)
+          day.spots = spotCount;
+          // console.log(day.spots)
           return day;
         })
         // THIS RETURN IN JEST SEEMS ODD.
-        console.log('days before returned: ', days)
+        // console.log('days before returned: ', days)
         return days;
       }
 
@@ -93,7 +93,7 @@ const useApplicationData = () => {
         days: days, 
         appointments: appointments, 
         interviewers: interviewers})
-      return true;
+      return;
     })
   }, [])
 
