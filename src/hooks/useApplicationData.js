@@ -85,15 +85,11 @@ const useApplicationData = () => {
     ])
     .then(all => {
       // console.log(all)
-      const days = all[0].data;
-      const appointments = all[1].data;
-      const interviewers = all[2].data;
+      const days = [...all[0].data];
+      const appointments = {...all[1].data};
+      const interviewers = {...all[2].data};
       dispatch({
-        type: SET_APPLICATION_DATA, 
-        days: days, 
-        appointments: appointments, 
-        interviewers: interviewers})
-      return;
+        type: SET_APPLICATION_DATA, days, appointments, interviewers})
     })
   }, [])
 

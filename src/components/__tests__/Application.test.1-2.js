@@ -5,17 +5,21 @@ import { render, cleanup, waitForElement, fireEvent, getByText, prettyDOM, getAl
 
 import Application from "components/Application";
 
-beforeEach(() => {
-  jest.resetModules(); // as far as I can tell, does nothing.. would expect to reset imported modules including Application... and any state that isn't clearing?
-})
+// beforeEach(() => {
+//   jest.resetModules(); 
+// })
 
 afterEach(() => {
-  cleanup(); // as far as I can tell, doing nothing.. we also have this imported globally, see setupTests.js
-  // jest.resetAllMocks() // clears mock functions, can't axios.get following reset
-  axios.get.mockClear();
+  axios.get.mockClear(); // resets count for mock function, so confirms that afterEach does call after each test
   axios.put.mockClear();
   axios.delete.mockClear();
+
+  cleanup(); // as far as I can tell, doing nothing.. we also have this imported globally, see setupTests.js
+  // jest.resetAllMocks() // clears mock functions, can't axios.get following reset
+  jest.resetModules(); // as far as I can tell, does nothing.. would expect to reset imported modules including Application... and any state that isn't clearing?
 });
+
+// afterEach(cleanup)
 
 describe('Application', () => {
   it('axios is mock function', () => {
@@ -37,7 +41,8 @@ describe('Application', () => {
   it('2) loads data, books an interview and reduces the spots remaining for the first day by 1', async () => {
     const { container, debug} = render(<Application />);
     await waitForElement(() => getByText(container, 'Archie Cohen'));
-    expect(axios.get).toHaveBeenCalledTimes(3); // will say called 6 times, maybe this is expected behaviour
+
+    expect(axios.get).toHaveBeenCalledTimes(3);
 
     const appointment = getAllByTestId(container, "appointment")[0];
 
@@ -56,33 +61,34 @@ describe('Application', () => {
     );
 
     expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
+    cleanup()
   })
 
 
 
   // IS IT NOT RESETTING???
-  // it("3) loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
-  //   const { container, debug } = render(<Application />);
+  it("3) loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+    const { container, debug } = render(<Application />);
   
-  //   await waitForElement(() => getByText(container, 'Archie Cohen'));
+    await waitForElement(() => getByText(container, 'Archie Cohen'));
   
-  //   const day = getAllByTestId(container, "day").find(day =>
-  //     queryByText(day, "Monday")
-  //   );
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
 
-  //   expect(getByText(day, '1 spot remaining')).toBeInTheDocument();
+    expect(getByText(day, '1 spot remaining')).toBeInTheDocument();
   
-  //   const appointment = getAllByTestId(container, 'appointment').find(appointment => queryByText(appointment, 'Archie Cohen'));
+    const appointment = getAllByTestId(container, 'appointment').find(appointment => queryByText(appointment, 'Archie Cohen'));
   
-  //   fireEvent.click(getByAltText(appointment, 'Delete'))
-  //   expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+    fireEvent.click(getByAltText(appointment, 'Delete'))
+    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
   
-  //   fireEvent.click(queryByText(appointment, 'Confirm'))
-  //   expect(getByText(appointment, 'Deleting')).toBeInTheDocument();
+    fireEvent.click(queryByText(appointment, 'Confirm'))
+    expect(getByText(appointment, 'Deleting')).toBeInTheDocument();
   
-  //   await waitForElement(() => getByAltText(appointment, 'Add'));
-  //   expect(getByText(day, '2 spots remaining')).toBeInTheDocument();
-  // })
+    await waitForElement(() => getByAltText(appointment, 'Add'));
+    expect(getByText(day, '2 spots remaining')).toBeInTheDocument();
+  })
 
   // it("4) loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
   //   const { container, debug } = render(<Application />);
