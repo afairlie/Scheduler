@@ -27,5 +27,5 @@ npm run storybook
 
 ## Screenshots
 
-!["Creating an appointment with Scheduler"]()
-!["Deleting an appointment"]()
+!["Creating an appointment with Scheduler"](https://github.com/afairlie/Scheduler/blob/master/docs/book-apt.png)
+!["Deleting an appointment"](https://github.com/afairlie/Scheduler/blob/master/docs/cancel-apt.png)
