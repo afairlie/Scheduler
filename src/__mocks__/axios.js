@@ -1,5 +1,3 @@
-// import {fixtures} from '../helpers/fixtures.js' // I separated fixtures data from mocks, did not change buggy behaviour
-
 const fixtures = {
   days: [
     {
@@ -54,10 +52,6 @@ const fixtures = {
     }
   }
 };
-
-// const dayFixtures = [...fixtures.days];
-// const appointmentFixtures = {...fixtures.appointments};
-// const interviewerFixtures = {...fixtures.interviewers};
 
 export default {
   defaults: { baseURL: "" },

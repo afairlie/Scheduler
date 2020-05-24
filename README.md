@@ -1,5 +1,8 @@
 # Interview Scheduler
 
+Scheduler is an app that let's you book appointments.
+It's built with ReactJS, Storybook (visual testbed), and tested with Jest and Cypress 
+
 ## Setup
 
 Install dependencies with `npm install`.
@@ -21,3 +24,8 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Screenshots
+
+!["Creating an appointment with Scheduler"]()
+!["Deleting an appointment"]()

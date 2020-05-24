@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
+import {updateSpots} from '../helpers/selectors'
 
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
@@ -11,8 +12,6 @@ function reducer(state, action) {
       return {...state, day: action.day}
     }
     case SET_APPLICATION_DATA: {
-      // console.log('set_application runs')
-      // console.log('days: ', action.days)
       return {...state,
         days: action.days,
         appointments: action.appointments,
@@ -20,44 +19,15 @@ function reducer(state, action) {
       }
     }
     case SET_INTERVIEW: {
-      // console.log('set_interview runs')
-
-      const updateSpots = (state) => {
-        // for each day, you want to loop over the day, and count the free spots
-        const days = state.days.map(day => {
-          let spotCount = 0;
-
-          day.appointments.forEach(appointmentID => {
-            if (!state.appointments[appointmentID].interview) {
-              // console.log(state.appointments[appointmentID])
-              spotCount++;
-            }
-          })
-
-          day.spots = spotCount;
-          // console.log(day.spots)
-          return day;
-        })
-        // THIS RETURN IN JEST SEEMS ODD.
-        // console.log('days before returned: ', days)
-        return days;
-      }
-
+      const newState = {...state}
       if (!action.interview) {
-        const newState = {...state}
-        
         newState.appointments[action.id].interview = null
         newState.days = updateSpots(newState)
-
-        return newState;
       } else {
-        const newState = {...state}
-        
         newState.appointments[action.id].interview = action.interview
         newState.days = updateSpots(newState)
-
-        return newState;
       }
+      return newState;
     }
     default:
       throw new Error(

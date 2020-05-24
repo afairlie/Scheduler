@@ -35,15 +35,20 @@ const getInterview = (state, interview) => {
 
 }
 
-// const findDayByAppt = (state, id) => {
-//   const dayID = state.days.filter((day) => {
-//     return day.appointments.includes(id) && day;
-    
-//   })[0].id
+const updateSpots = (state) => {
+  const days = state.days.map(day => {
+    let spotCount = 0;
 
-//   const dayCopy = {...filteredDay, appointments: [...filteredDay.appointments], interviewers: [...filteredDay.interviewers]}
+    day.appointments.forEach(appointmentID => {
+      if (!state.appointments[appointmentID].interview) {
+        spotCount++;
+      }
+    })
 
-//   return dayID;
-// }
+    day.spots = spotCount;
+    return day;
+  })
+  return days;
+}
 
-export { getAppointmentsForDay, getInterviewersForDay, getInterview};
+export { getAppointmentsForDay, getInterviewersForDay, getInterview, updateSpots};
